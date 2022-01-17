@@ -20,10 +20,11 @@ M.PIXEL_SIZE = 4
 M.MAX_LEVELS = 10
 
 M.level = 1
+M.turn = 0 
 M.time = 0
 
 M.offset = vmath.vector3()
-M.scrollpos = vmath.vector3()
+M.playerpos = vmath.vector3()
 
 M.savedata = {0,0,0,0, 0,0,0,0}
 

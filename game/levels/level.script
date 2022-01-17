@@ -12,9 +12,13 @@ local function parse(self)
 	for y = sy, h+sy-1 do
 		for x = sx, w+sx-1 do
 			local t = tilemap.get_tile("#tilemap", "world", x, y)
-			if t == 1 then
+			local pos = data.tile2world(vmath.vector3(x, y, 0))
+			if t == 3 then
 				tilemap.set_tile("#tilemap", "world", x, y, 0)
-				msg.post("common/player", "position", {pos = data.tile2world(vmath.vector3(x, y, 0.5))})
+				msg.post("/common/player", "position", {pos = pos})
+			elseif t == 5 then
+				tilemap.set_tile("#tilemap", "world", x, y, 0)
+				msg.post("/common/enemy", "spawn", {pos = pos})
 			end
 		end
 	end

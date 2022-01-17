@@ -16,8 +16,15 @@ local function quit2menu(self)
 end
 
 local function move(self)
-	local pos = go.get_position() + self.move
-	go.set_position(pos)
+	if vmath.length(self.move) > 0 and data.turn == 0 then
+		local pos = data.playerpos + self.move
+		local t = tilemap.get_tile("/level#tilemap", "world", pos.x, pos.y)
+		if t == 0 then
+			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, data.tile2world(pos), go.EASING_LINEAR, 0.2)
+			data.playerpos = pos
+			data.turn = 1
+		end
+	end
 end
 
 local function flash(self)
@@ -38,34 +45,49 @@ local function clear(self)
 	self.lock = INPUT_LOCK
 end
 
+local function turn(self)
+	if data.turn > 0 then
+		data.turn = data.turn + 1
+		if data.turn > 20 then
+			data.turn = 0
+		end
+	end
+end
+
 function update(self, dt)
 	if data.state == data.STATE_PLAYING then
 		move(self)
 		flash(self)
+		turn(self)
 	end
 
+	self.move = vmath.vector3()
 	if self.lock > 0 then self.lock = self.lock - 1 end
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("position") then
 		go.set_position(message.pos)
-		data.spawnpos = message.pos
+		data.playerpos = data.world2tile(message.pos)
 	elseif message_id == hash("quit") then
 		quit2menu(self)
 	end
 end
 
 local function input_playing(self, action_id, action)
+	if not action.pressed then return
+	end
+	
 	if action_id == hash("left") then
-
+		self.move.x = -1
 	elseif action_id == hash("right") then
-
+		self.move.x = 1
 	elseif action_id == hash("up") then
-
+		self.move.y = 1
 	elseif action_id == hash("down") then
-
+		self.move.y = -1
 	elseif action_id == hash("action") and action.pressed then
+		
 	elseif action_id == hash("exit") and action.pressed then
 		msg.post("view#pause", "show")
 	elseif action_id == hash("debug") and action.pressed then
