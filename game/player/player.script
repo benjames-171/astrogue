@@ -74,6 +74,13 @@ function on_message(self, message_id, message, sender)
 	end
 end
 
+local function dropbomb(self)
+	local pos = data.tile2world(data.playerpos)
+	pos.z = pos.z - 0.1
+	factory.create("#bomb-factory", pos)
+	self.invul = INVUL
+end
+
 local function input_playing(self, action_id, action)
 	if not action.pressed then return
 	end
@@ -87,7 +94,7 @@ local function input_playing(self, action_id, action)
 	elseif action_id == hash("down") then
 		self.move.y = -1
 	elseif action_id == hash("action") and action.pressed then
-		
+		dropbomb(self)
 	elseif action_id == hash("exit") and action.pressed then
 		msg.post("view#pause", "show")
 	elseif action_id == hash("debug") and action.pressed then

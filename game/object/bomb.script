@@ -1,0 +1,10 @@
+function init(self)
+	particlefx.play("#pfx")
+end
+
+function update(self, dt)
+end
+
+function on_message(self, message_id, message, sender)
+end
+
