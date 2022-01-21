@@ -39,8 +39,8 @@ local function addmask()
 	for y = sy, h+sy-1 do
 		for x = sx, w+sx-1 do
 			local t = tilemap.get_tile("#tilemap", "world", x, y)
-			--if t > 0 then tilemap.set_tile("#tilemap", "fog", x, y, 3)
-			--end
+			if t > 0 then tilemap.set_tile("#tilemap", "fog", x, y, 1)
+			end
 		end
 	end
 end

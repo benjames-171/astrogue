@@ -22,7 +22,7 @@ local function move(self)
 	if vmath.length(self.move) > 0 and data.turn == 0 then
 		local pos = data.playerpos + self.move
 
-		local e = enemy.ontile(data.tile2world(pos))
+		local e = enemy.ontile(pos)
 		if e then
 			msg.post(e, "hit", {damage = 1})
 			return
@@ -87,9 +87,27 @@ local function turn(self)
 	end
 end
 
+local function fog(self)
+	for r = 8, 64, 8 do
+		for n = 0, math.pi * 2, 0.1 do
+			local p = vmath.vector3(math.cos(n) * r, math.sin(n) * r, 0)
+			cast = physics.raycast(go.get_position(), go.get_position() + p, {hash("world")}, false)
+			if cast ~= nil then
+				local v = vmath.normalize(p)
+				local pos = data.world2tile(cast.position + (v * 6))
+				tilemap.set_tile("/level#tilemap", "fog", pos.x, pos.y, 0)
+			else
+				p = data.world2tile(go.get_position() + p)
+				tilemap.set_tile("/level#tilemap", "fog", p.x, p.y, 0)
+			end
+		end
+	end
+end
+
 function update(self, dt)
 	if data.state == data.STATE_PLAYING then
 		move(self)
+		fog(self)
 		cam(self)
 		flash(self)
 		turn(self)

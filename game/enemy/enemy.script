@@ -4,13 +4,14 @@ local enemy = require "game.enemy.enemy"
 function init(self)
 	self.energy = 2
 	self.pos = vmath.vector3(data.world2tile(go.get_position()))
+	msg.post("#sprite", "disable")
 	--self.type = math.random(1,4)
 	--anim = "enemy"..tostring(self.type)
 	--msg.post("#sprite", "play_animation", {id = hash(anim)})
 end
 
 local function attack(self)
-	msg.post("/common/player", "hit")
+	msg.post("player", "hit")
 end
 
 local function trymove(self, move)
@@ -56,9 +57,24 @@ local function ai(self)
 	end
 end
 
+local function look(self)
+	local pos = go.get_position()
+	local player = data.tile2world(data.playerpos)
+
+	if pos.x ~= player.x or pos.y ~= player.y then
+		local cast = physics.raycast(pos, player, {hash("world"), hash("player")}, false)
+		if cast == nil or cast.group == hash("player") then
+			msg.post("#sprite", "enable")
+		else
+			msg.post("#sprite", "disable")
+		end
+	end
+end
+
 function update(self, dt)
 	if data.turn == 10  then
 		ai(self)
+		look(self)
 	end
 end
 
