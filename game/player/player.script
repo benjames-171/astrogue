@@ -121,6 +121,7 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("position") then
 		go.set_position(data.tile2world(message.pos))
 		data.playerpos = message.pos
+		tilemap.set_tile("/level#tilemap", "fog", message.pos.x, message.pos.y, 0)
 	elseif message_id == hash("quit") then
 		quit2menu(self)
 	end
