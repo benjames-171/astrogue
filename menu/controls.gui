@@ -156,9 +156,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.9098039
-    y: 0.8627451
-    z: 0.84705883
+    x: 0.5176471
+    y: 0.5921569
+    z: 0.7019608
     w: 1.0
   }
   type: TYPE_TEXT
@@ -166,6 +166,7 @@ nodes {
   text: "move\n"
   "\n"
   "action\n"
+  "\n"
   "wait\n"
   "fullscreen\n"
   "quit"
@@ -233,6 +234,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: "NUMPAD or\n"
   "ARROWS KEYS\n"
+  "NUMPAD 5\n"
   "X\n"
   "W\n"
   "F11\n"
