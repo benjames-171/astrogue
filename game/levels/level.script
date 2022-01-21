@@ -2,7 +2,7 @@ local data = require "main.data"
 
 local SIZE_W = 64
 local SIZE_H = 64
-local MAX_ROOMS = 12
+local MAX_ROOMS = 20
 local TRIES = 10
 
 local rooms = {}
@@ -111,18 +111,18 @@ local function drawrooms()
 	local set = (data.level % 6) * 2
 	for k,v in pairs(rooms) do
 		for x = v.x1-1, v.x2+1 do
-			tilemap.set_tile("#tilemap", "world", x, v.y1-1, 29)
-			tilemap.set_tile("#tilemap", "world", x, v.y2+1, 29)
+			tilemap.set_tile("#tilemap", "world", x, v.y1-1, 85)
+			tilemap.set_tile("#tilemap", "world", x, v.y2+1, 85)
 		end
 		for y = v.y1-1, v.y2+1 do
-			tilemap.set_tile("#tilemap", "world", v.x1-1, y, 29)
-			tilemap.set_tile("#tilemap", "world", v.x2+1, y, 29)
+			tilemap.set_tile("#tilemap", "world", v.x1-1, y, 85)
+			tilemap.set_tile("#tilemap", "world", v.x2+1, y, 85)
 		end
 
 		for x = v.x1, v.x2 do
 			for y = v.y1, v.y2 do
 				if math.random(1,3) > 1 then
-					--tilemap.set_tile("#tilemap", "world", x, y, math.random(129 + set, 130 + set))
+					tilemap.set_tile("#tilemap", "world", x, y, math.random(15, 16))
 				end
 			end
 		end
@@ -131,7 +131,11 @@ end
 
 local function drawdoors()
 	for k,v in pairs(doors) do
-		tilemap.set_tile("#tilemap", "world", v.x, v.y, 0)
+		local t = tilemap.get_tile("#tilemap", "world", v.x+1, v.y)
+		if t < 85 then t = 113
+		else t = 99
+		end
+		tilemap.set_tile("#tilemap", "world", v.x, v.y, t)
 	end
 end
 
@@ -295,22 +299,22 @@ end
 
 local function tile(self, x, y, set)
 	local p = {
-		0,0,0,0,102,
-		0,0,0,1,62,
-		0,0,1,0,82,
-		0,0,1,1,63,
-		0,1,0,0,62,
-		0,1,0,1,62,
-		0,1,1,0,61,
-		0,1,1,1,102,
-		1,0,0,0,82,
-		1,0,0,1,103,
-		1,0,1,0,82,
-		1,0,1,1,83,
-		1,1,0,0,101,
-		1,1,0,1,62,
-		1,1,1,0,81,
-		1,1,1,1,102}
+		0,0,0,0,101,
+		0,0,0,1,89,
+		0,0,1,0,103,
+		0,0,1,1,88,
+		0,1,0,0,103,
+		0,1,0,1,89,
+		0,1,1,0,86,
+		0,1,1,1,87,
+		1,0,0,0,103,
+		1,0,0,1,116,
+		1,0,1,0,103,
+		1,0,1,1,102,
+		1,1,0,0,114,
+		1,1,0,1,115,
+		1,1,1,0,100,
+		1,1,1,1,101}
 
 	local n = tilemap.get_tile("#tilemap", "world", x, y+1)
 	local e = tilemap.get_tile("#tilemap", "world", x+1, y)
@@ -338,7 +342,7 @@ local function decorate(self)
 	for y = sy+1, sy+h-2 do
 		for x = sx+1, sx+w-2 do
 			local t = tilemap.get_tile("#tilemap", "world", x, y)
-			if t >= 61 and t<= 120 then tile(self, x, y, set)
+			if t >= 85 then tile(self, x, y, 0)
 			end
 		end
 	end
@@ -357,7 +361,7 @@ local function generate()
 	cull()
 	drawrooms()
 	populate()
-	--decorate()
+	decorate()
 	drawdoors()
 	addmask()
 end

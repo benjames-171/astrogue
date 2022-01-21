@@ -7,19 +7,10 @@ collision: ""
 material_tag: "tile"
 animations {
   id: "arrow"
-  start_tile: 1
+  start_tile: 2
   end_tile: 2
-  playback: PLAYBACK_LOOP_FORWARD
+  playback: PLAYBACK_NONE
   fps: 5
-  flip_horizontal: 0
-  flip_vertical: 0
-}
-animations {
-  id: "bomb"
-  start_tile: 7
-  end_tile: 8
-  playback: PLAYBACK_LOOP_FORWARD
-  fps: 10
   flip_horizontal: 0
   flip_vertical: 0
 }

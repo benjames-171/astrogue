@@ -20,7 +20,7 @@ local function move(self)
 	if vmath.length(self.move) > 0 and data.turn == 0 then
 		local pos = data.playerpos + self.move
 		local t = tilemap.get_tile("level#tilemap", "world", pos.x, pos.y)
-		if t == 0 then
+		if t < 85 then
 			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, data.tile2world(pos), go.EASING_LINEAR, 0.1)
 			data.playerpos = pos
 			data.turn = 1
@@ -106,7 +106,9 @@ local function input_playing(self, action_id, action)
 	elseif action_id == hash("downright") then
 		self.move = vmath.vector3(1,-1,0)
 	elseif action_id == hash("action") and action.pressed then
-		
+
+	elseif action_id == hash("wait") and action.pressed then
+		data.turn = 1
 	elseif action_id == hash("exit") and action.pressed then
 		msg.post("view#pause", "show")
 	elseif action_id == hash("debug") and action.pressed then
