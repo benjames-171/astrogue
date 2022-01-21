@@ -1,8 +1,31 @@
 local data = require "main.data"
 
+local TICKTIME = 5
+
+function init(self)
+	self.time = 0
+end
+
+local function status(self, text)
+	gui.set_text(gui.get_node("tick4"), gui.get_text(gui.get_node("tick3")))
+	gui.set_text(gui.get_node("tick3"), gui.get_text(gui.get_node("tick2")))
+	gui.set_text(gui.get_node("tick2"), gui.get_text(gui.get_node("tick1")))
+	gui.set_text(gui.get_node("tick1"), text)
+	self.time = 0
+end
+
 function update(self, dt)
+	self.time = self.time + dt
+
+	if self.time >= TICKTIME then
+		status(self, "")
+		self.time = 0
+	end
 end
 
 function on_message(self, message_id, message, sender)
+	if message_id == hash("status") then
+		status(self, message.text)
+	end
 end
 

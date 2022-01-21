@@ -104,7 +104,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "game/arrow"
+  texture: "game/player"
   id: "arrow"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -159,7 +159,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "NEW GAME"
+  text: "START"
   font: "main"
   id: "1"
   xanchor: XANCHOR_NONE

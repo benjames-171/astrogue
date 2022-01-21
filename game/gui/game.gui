@@ -1,7 +1,7 @@
 script: "/game/gui/game.gui_script"
 fonts {
-  name: "main"
-  font: "/assets/font/main.font"
+  name: "small"
+  font: "/assets/font/small.font"
 }
 background_color {
   x: 0.0
@@ -11,8 +11,8 @@ background_color {
 }
 nodes {
   position {
-    x: 1229.0
-    y: 0.0
+    x: 14.0
+    y: 15.0
     z: 0.0
     w: 1.0
   }
@@ -29,44 +29,52 @@ nodes {
     w: 1.0
   }
   size {
-    x: 192.0
-    y: 576.0
+    x: 1000.0
+    y: 22.0
     z: 0.0
     w: 1.0
   }
   color {
+    x: 0.8117647
+    y: 0.7058824
+    z: 0.3882353
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: ""
+  font: "small"
+  id: "tick1"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_SW
+  outline {
     x: 0.06666667
     y: 0.07450981
     z: 0.13725491
     w: 1.0
   }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "bg"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_SE
-  adjust_mode: ADJUST_MODE_FIT
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_STRETCH
+  line_break: false
   layer: ""
   inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
   alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 0.0
   template_node_child: false
-  size_mode: SIZE_MODE_MANUAL
+  text_leading: 1.0
+  text_tracking: 0.0
 }
 nodes {
   position {
-    x: -184.0
-    y: 0.0
+    x: 14.0
+    y: 37.0
     z: 0.0
     w: 1.0
   }
@@ -83,40 +91,171 @@ nodes {
     w: 1.0
   }
   size {
-    x: 4.0
-    y: 576.0
+    x: 1000.0
+    y: 22.0
     z: 0.0
     w: 1.0
   }
   color {
-    x: 0.21568628
-    y: 0.27058825
-    z: 0.4
+    x: 0.8117647
+    y: 0.7058824
+    z: 0.3882353
     w: 1.0
   }
-  type: TYPE_BOX
+  type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  texture: ""
-  id: "line"
+  text: ""
+  font: "small"
+  id: "tick2"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
-  pivot: PIVOT_SE
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "bg"
+  pivot: PIVOT_SW
+  outline {
+    x: 0.06666667
+    y: 0.07450981
+    z: 0.13725491
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_STRETCH
+  line_break: false
   layer: ""
   inherit_alpha: true
-  slice9 {
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 0.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 14.0
+    y: 59.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
     x: 0.0
     y: 0.0
     z: 0.0
-    w: 0.0
+    w: 1.0
   }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 1000.0
+    y: 22.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.8117647
+    y: 0.7058824
+    z: 0.3882353
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: ""
+  font: "small"
+  id: "tick3"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_SW
+  outline {
+    x: 0.06666667
+    y: 0.07450981
+    z: 0.13725491
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_STRETCH
+  line_break: false
+  layer: ""
+  inherit_alpha: true
   alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 0.0
   template_node_child: false
-  size_mode: SIZE_MODE_MANUAL
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 14.0
+    y: 81.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 1000.0
+    y: 22.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.8117647
+    y: 0.7058824
+    z: 0.3882353
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: ""
+  font: "small"
+  id: "tick4"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_SW
+  outline {
+    x: 0.06666667
+    y: 0.07450981
+    z: 0.13725491
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_STRETCH
+  line_break: false
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 0.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

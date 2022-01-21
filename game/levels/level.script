@@ -352,6 +352,9 @@ local function generate()
 	decorate()
 	drawdoors()
 	addmask()
+
+	local str = "ENTERED LEVEL "..tostring(data.level)
+	msg.post("view#game", "status", {text = str})
 end
 
 function init(self)
