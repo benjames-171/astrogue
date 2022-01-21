@@ -22,6 +22,9 @@ M.MAX_LEVELS = 10
 M.level = 1
 M.turn = 0 
 M.time = 0
+M.hp = 0
+M.xp = 0
+M.plev = 1
 
 M.offset = vmath.vector3()
 M.playerpos = vmath.vector3()

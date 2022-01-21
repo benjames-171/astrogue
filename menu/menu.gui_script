@@ -18,6 +18,9 @@ end
 local function startgame(self)
 	msg.post("main:/handler", "show_game")
 	data.level = 1
+	data.hp = 100
+	data.plev = 1
+	data.xp = 0
 	data.state = data.STATE_PLAYING
 end	
 

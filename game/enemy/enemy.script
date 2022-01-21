@@ -81,6 +81,7 @@ end
 local function hit(self, damage)
 	enemy.delete(go.get_id())
 	msg.post("view#game", "status", {text = "KILLED A MONSTER"})
+	data.xp = data.xp + 10
 	
 --[[	self.energy = self.energy - damage
 	msg.post("/common/fx", "fx", {pos = go.get_position(), fx = data.FX_HIT})
