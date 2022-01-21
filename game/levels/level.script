@@ -2,7 +2,7 @@ local data = require "main.data"
 
 local SIZE_W = 64
 local SIZE_H = 64
-local MAX_ROOMS = 20
+local MAX_ROOMS = 30
 local TRIES = 10
 
 local rooms = {}
@@ -336,7 +336,7 @@ local function decorate(self)
 end
 
 local function generate()
-	min = 3
+	min = 1
 	max = 6
 
 	clear()

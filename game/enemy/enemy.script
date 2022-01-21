@@ -6,7 +6,7 @@ function init(self)
 	self.pos = vmath.vector3(data.world2tile(go.get_position()))
 	msg.post("#sprite", "disable")
 	--self.type = math.random(1,4)
-	--anim = "enemy"..tostring(self.type)
+	--anim = "e"..tostring(self.type)
 	--msg.post("#sprite", "play_animation", {id = hash(anim)})
 end
 

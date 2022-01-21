@@ -3,7 +3,7 @@ local function disablenode (self, node)
 end
 
 local function fadeout(self)
-	gui.animate(gui.get_node("container"), gui.PROP_COLOR, vmath.vector4(1, 1, 1, 0), gui.EASING_LINEAR, 0.5, 0.2, disablenode)
+	gui.animate(gui.get_node("container"), gui.PROP_COLOR, vmath.vector4(1, 1, 1, 0), gui.EASING_LINEAR, 0.3, 0.1, disablenode)
 end
 
 function init(self)
