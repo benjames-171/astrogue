@@ -21,7 +21,7 @@ local function move(self)
 		local pos = data.playerpos + self.move
 		local t = tilemap.get_tile("level#tilemap", "world", pos.x, pos.y)
 		if t == 0 then
-			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, data.tile2world(pos), go.EASING_LINEAR, 0.2)
+			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, data.tile2world(pos), go.EASING_LINEAR, 0.1)
 			data.playerpos = pos
 			data.turn = 1
 		end
@@ -80,17 +80,9 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("position") then
 		go.set_position(data.tile2world(message.pos))
 		data.playerpos = message.pos
-		pprint(message.pos)
 	elseif message_id == hash("quit") then
 		quit2menu(self)
 	end
-end
-
-local function dropbomb(self)
-	local pos = data.tile2world(data.playerpos)
-	pos.z = pos.z - 0.1
-	factory.create("#bomb-factory", pos)
-	self.invul = INVUL
 end
 
 local function input_playing(self, action_id, action)
@@ -105,8 +97,16 @@ local function input_playing(self, action_id, action)
 		self.move.y = 1
 	elseif action_id == hash("down") then
 		self.move.y = -1
+	elseif action_id == hash("upleft") then
+		self.move = vmath.vector3(-1,1,0)
+	elseif action_id == hash("upright") then
+		self.move = vmath.vector3(1,1,0)
+	elseif action_id == hash("downleft") then
+		self.move = vmath.vector3(-1,-1,0)
+	elseif action_id == hash("downright") then
+		self.move = vmath.vector3(1,-1,0)
 	elseif action_id == hash("action") and action.pressed then
-		dropbomb(self)
+		
 	elseif action_id == hash("exit") and action.pressed then
 		msg.post("view#pause", "show")
 	elseif action_id == hash("debug") and action.pressed then

@@ -11,26 +11,6 @@ local anim = {}
 local min = 0
 local max = 0
 
-local function count()
-	sx, sy, w, h = tilemap.get_bounds("#tilemap")
-	local total = 0
-
-	for y = sy, h+sy-1 do
-		for x = sx, w+sx-1 do
-			local a = tilemap.get_tile("#tilemap", "world", x, y)
-			local b = tilemap.get_tile("#tilemap", "fog", x, y)
-			local c = tilemap.get_tile("#tilemap", "obj", x, y)
-			if a > 0 then total = total + 1
-			end
-			if b > 0 then total = total + 1
-			end
-			if c > 0 then total = total + 1
-			end
-		end
-	end
-	print("TILES ", total)
-end
-
 local function clear()
 	sx, sy, w, h = tilemap.get_bounds("#tilemap")
 

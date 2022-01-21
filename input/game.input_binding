@@ -58,6 +58,46 @@ key_trigger {
   input: KEY_ESC
   action: "exit"
 }
+key_trigger {
+  input: KEY_W
+  action: "wait"
+}
+key_trigger {
+  input: KEY_KP_1
+  action: "downleft"
+}
+key_trigger {
+  input: KEY_KP_2
+  action: "down"
+}
+key_trigger {
+  input: KEY_KP_3
+  action: "downright"
+}
+key_trigger {
+  input: KEY_KP_4
+  action: "left"
+}
+key_trigger {
+  input: KEY_KP_5
+  action: "action"
+}
+key_trigger {
+  input: KEY_KP_6
+  action: "right"
+}
+key_trigger {
+  input: KEY_KP_7
+  action: "upleft"
+}
+key_trigger {
+  input: KEY_KP_8
+  action: "up"
+}
+key_trigger {
+  input: KEY_KP_9
+  action: "upright"
+}
 gamepad_trigger {
   input: GAMEPAD_LSTICK_LEFT
   action: "left"
