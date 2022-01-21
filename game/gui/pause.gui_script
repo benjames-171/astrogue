@@ -35,7 +35,7 @@ local function input(self, action_id, action)
 			close(self)
 		elseif self.handpos == 2 then
 			msg.post("main:/handler", "set_time_step", {factor = 1, mode = 0})
-			msg.post("/common/player", "quit")
+			msg.post("player", "quit")
 		end
 	elseif action_id == hash("exit") and action.pressed then
 		close(self)

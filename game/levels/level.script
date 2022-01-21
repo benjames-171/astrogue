@@ -1,29 +1,393 @@
 local data = require "main.data"
 
-local function parse(self)
+local SIZE_W = 64
+local SIZE_H = 64
+local MAX_ROOMS = 25
+local TRIES = 10
+local ANIM_TIME = 0.5
+
+local rooms = {}
+local doors = {}
+local anim = {}
+local min = 0
+local max = 0
+
+local function count()
+	sx, sy, w, h = tilemap.get_bounds("#tilemap")
+	local total = 0
+
+	for y = sy, h+sy-1 do
+		for x = sx, w+sx-1 do
+			local a = tilemap.get_tile("#tilemap", "world", x, y)
+			local b = tilemap.get_tile("#tilemap", "fog", x, y)
+			local c = tilemap.get_tile("#tilemap", "obj", x, y)
+			if a > 0 then total = total + 1
+			end
+			if b > 0 then total = total + 1
+			end
+			if c > 0 then total = total + 1
+			end
+		end
+	end
+	print("TILES ", total)
+end
+
+local function clear()
 	sx, sy, w, h = tilemap.get_bounds("#tilemap")
 
 	data.bounds = vmath.vector4(
-		(sx - 1) * data.TILE_SIZE,
-		(sy - 1) * data.TILE_SIZE,
-		((sx + w - 1) * data.TILE_SIZE) - data.CANV_W,
-		((sy + h - 1) * data.TILE_SIZE) - data.CANV_H)
-	
+	(sx - 1) * data.TILE_SIZE,
+	(sy - 1) * data.TILE_SIZE,
+	((sx + w - 1) * data.TILE_SIZE) - data.CANV_W,
+	((sy + h - 1) * data.TILE_SIZE) - data.CANV_H)
+
+	for y = sy, h+sy-1 do
+		for x = sx, w+sx-1 do
+			tilemap.set_tile("#tilemap", "world", x, y, 0)
+			tilemap.set_tile("#tilemap", "obj", x, y, 0)
+			tilemap.set_tile("#tilemap", "fog", x, y, 0)
+		end
+	end
+
+	rooms = {}
+	doors = {}
+	anim = {}
+end
+
+local function addmask()
+	sx, sy, w, h = tilemap.get_bounds("#tilemap")
+
 	for y = sy, h+sy-1 do
 		for x = sx, w+sx-1 do
 			local t = tilemap.get_tile("#tilemap", "world", x, y)
-			local pos = data.tile2world(vmath.vector3(x, y, 0))
-			if t == 3 then
-				tilemap.set_tile("#tilemap", "world", x, y, 0)
-				msg.post("/common/player", "position", {pos = pos})
-			elseif t == 5 then
-				tilemap.set_tile("#tilemap", "world", x, y, 0)
-				msg.post("/common/enemy", "spawn", {pos = pos})
+			--if t > 0 then tilemap.set_tile("#tilemap", "fog", x, y, 3)
+			--end
+		end
+	end
+end
+
+local function getroomcentre(r)
+	local x = math.floor(r.x1 + ((r.x2 - r.x1) / 2))
+	local y = math.floor(r.y1 + ((r.y2 - r.y1) / 2))
+
+	return vmath.vector3(x,y,0.5)
+end
+
+local function validate(room)
+	for k,v in pairs(rooms) do
+		if v.id ~= room.id then
+			if room.x1 > v.x2 or
+				room.x2 < v.x1 or
+				room.y1 > v.y2 or
+				room.y2 < v.y1 then
+				--okay
+			else
+				return false
+			end
+		end
+	end
+	
+	return true
+end
+
+local function makeroom(id)
+	local room = {}
+	local valid = false
+	local tries = TRIES
+
+	while not valid do
+		local x1 = math.random(3, SIZE_W - max-1)
+		local y1 = math.random(3, SIZE_H - max-1)
+		local x2 = x1 + math.random(min, max)
+		local y2 = y1 + math.random(min, max)
+
+		if id <= 2 then
+			x2 = x1 + 3
+			y2 = y1 + 3
+		elseif id <= 5 then
+			if math.random(1,2) == 1 then
+				x2 = x1 + 5
+				y2 = y1 + 7
+			else
+				x2 = x1 + 7
+				y2 = y1 + 5
+			end
+		end
+
+		local room = {x1 = x1, y1 = y1, x2 = x2, y2 = y2, id = id}
+		
+		valid = validate(room)
+
+		if valid then
+			table.insert(rooms, room)
+		end
+
+		tries = tries - 1
+		if tries <= 0 then return
+		end
+	end
+end
+
+local function drawrooms()
+	local set = (data.level % 6) * 2
+	for k,v in pairs(rooms) do
+		for x = v.x1-1, v.x2+1 do
+			tilemap.set_tile("#tilemap", "world", x, v.y1-1, 29)
+			tilemap.set_tile("#tilemap", "world", x, v.y2+1, 29)
+		end
+		for y = v.y1-1, v.y2+1 do
+			tilemap.set_tile("#tilemap", "world", v.x1-1, y, 29)
+			tilemap.set_tile("#tilemap", "world", v.x2+1, y, 29)
+		end
+
+		for x = v.x1, v.x2 do
+			for y = v.y1, v.y2 do
+				if math.random(1,3) > 1 then
+					tilemap.set_tile("#tilemap", "world", x, y, math.random(129 + set, 130 + set))
+				end
 			end
 		end
 	end
 end
 
+local function drawdoors()
+	for k,v in pairs(doors) do
+		tilemap.set_tile("#tilemap", "world", v.x, v.y, 6)
+	end
+end
+
+local function procgen()
+	for n = 1, MAX_ROOMS do
+		makeroom(n)
+	end
+end
+
+local function shuffle()
+	for k,v in pairs(rooms) do
+		local cx = SIZE_W / 2
+		local cy = SIZE_H / 2
+		local r = getroomcentre(v)
+
+		if r.x > cx then
+			local room = {x1 = v.x1-1, y1 = v.y1, x2 = v.x2-1, y2 = v.y2, id = v.id}
+			if validate(room) then
+				rooms[k] = room
+			end
+		elseif r.x < cx then
+			local room = {x1 = v.x1+1, y1 = v.y1, x2 = v.x2+1, y2 = v.y2, id = v.id}
+			if validate(room) then
+				rooms[k] = room
+			end
+		end
+
+		if r.y > cy then
+			local room = {x1 = v.x1, y1 = v.y1-1, x2 = v.x2, y2 = v.y2-1, id = v.id}
+			if validate(room) then
+				rooms[k] = room
+			end
+		elseif r.y < cy then
+			local room = {x1 = v.x1, y1 = v.y1+1, x2 = v.x2, y2 = v.y2+1, id = v.id}
+			if validate(room) then
+				rooms[k] = room
+			end
+		end
+	end
+end
+
+local function dooradd(a, b, vert)
+	local r1 = rooms[a]
+	local r2 = rooms[b]
+	local l = 0
+	local h = 0
+	local x = 0
+	local y = 0
+
+	if not vert then
+		if r1.x1 > r2.x1 then l = r1.x1
+		else l = r2.x1
+		end
+		if r1.x2 < r2.x2 then h = r1.x2
+		else h = r2.x2
+		end
+		if r1.y1 > r2.y2 then y = r1.y1 - 1
+		else y = r1.y2 + 1
+		end
+
+		x = l + ((h - l) / 2)
+	else
+		if r1.y1 > r2.y1 then l = r1.y1
+		else l = r2.y1
+		end
+		if r1.y2 < r2.y2 then h = r1.y2
+		else h = r2.y2
+		end
+		if r1.x1 > r2.x2 then x = r1.x1 - 1
+		else x = r1.x2 + 1
+		end
+
+		y = l + ((h - l) / 2)
+	end
+
+	local p = vmath.vector3(math.floor(x), math.floor(y), 0)
+	table.insert(doors, p)
+	
+	r1.valid = true
+	r2.valid = true
+end
+
+local function diff(a, b)
+	return math.abs(a - b)
+end
+
+local function align(ri)
+	local r = rooms[ri]
+	local t = 0
+	for k,v in pairs(rooms) do
+		if k ~= ri then
+			if (r.x1 >= v.x1 and r.x1 <= v.x2) or
+				(r.x2 >= v.x1 and r.x2 <= v.x2) then
+				if r.y1 == v.y2 + 2 or r.y2 == v.y1 - 2 then
+					dooradd(ri, k, false)
+					t = t + 1
+				end
+			end
+
+			if (r.y1 >= v.y1 and r.y1 <= v.y2) or
+				(r.y2 >= v.y1 and r.y2 <= v.y2) then
+					if r.x1 == v.x2 + 2 or r.x2 == v.x1 - 2 then
+					dooradd(ri, k, 1, true)
+					t = t + 1
+				end
+			end
+		end
+	end
+
+	r.doors = t
+end
+
+local function doors()
+	for k,v in pairs(rooms) do
+		align(k)
+	end
+end
+
+local function correct()
+	for k,v in pairs(rooms) do
+		v.x2 = v.x2 - 1
+		v.y2 = v.y2 - 1
+	end
+end
+
+local function cull()
+	for k,v in pairs(rooms) do
+		if not v.valid then
+			table.remove(rooms, k)
+		end
+	end
+end
+
+local function randinroom(v, m)
+	local pos = vmath.vector3(0,0,0.5)
+
+	if v.x2-m > v.x1+m then pos.x = math.random(v.x1+m, v.x2-m)
+	else pos.x = v.x1
+	end
+	if v.y2-m > v.y1+m then pos.y = math.random(v.y1+m, v.y2-m)
+	else pos.y = v.y1
+	end
+
+	return pos
+end
+
+local function populate()
+	local pos = getroomcentre(rooms[1])
+
+	pos.z = 1
+	msg.post("/player", "position", {pos = pos}) -- start position
+
+	pos = getroomcentre(rooms[2])
+	tilemap.set_tile("/level#tilemap", "world", pos.x, pos.y, 7) -- exit
+end
+
+local function tile(self, x, y, set)
+	local p = {
+		0,0,0,0,102,
+		0,0,0,1,62,
+		0,0,1,0,82,
+		0,0,1,1,63,
+		0,1,0,0,62,
+		0,1,0,1,62,
+		0,1,1,0,61,
+		0,1,1,1,102,
+		1,0,0,0,82,
+		1,0,0,1,103,
+		1,0,1,0,82,
+		1,0,1,1,83,
+		1,1,0,0,101,
+		1,1,0,1,62,
+		1,1,1,0,81,
+		1,1,1,1,102}
+
+	local n = tilemap.get_tile("#tilemap", "world", x, y+1)
+	local e = tilemap.get_tile("#tilemap", "world", x+1, y)
+	local s = tilemap.get_tile("#tilemap", "world", x, y-1)
+	local w = tilemap.get_tile("#tilemap", "world", x-1, y)
+
+	if n >= 61 and n <= 120 then n = 1 else n = 0 end
+	if e >= 61 and e <= 120 then e = 1 else e = 0 end
+	if s >= 61 and s <= 120 then s = 1 else s = 0 end
+	if w >= 61 and w <= 120 then w = 1 else w = 0 end
+
+	local c = 1
+	while p[c] ~= n or p[c+1] ~= e or p[c+2] ~= s or p[c+3] ~= w do
+		c = c + 5
+	end
+
+	local tile = p[c+4]
+	tilemap.set_tile("#tilemap", "world", x, y, tile + (set*3))
+end
+
+local function decorate(self)
+	local set = data.level % 6
+	sx, sy, w, h = tilemap.get_bounds("#tilemap")
+
+	for y = sy+1, sy+h-2 do
+		for x = sx+1, sx+w-2 do
+			local t = tilemap.get_tile("#tilemap", "world", x, y)
+			if t >= 61 and t<= 120 then tile(self, x, y, set)
+			end
+		end
+	end
+end
+
+local function generate()
+	min = 4
+	max = 10
+
+	clear()
+	procgen()
+	for n = 1, 50 do shuffle()
+	end
+	correct()
+	doors()
+	cull()
+	drawrooms()
+	populate()
+	--decorate()
+	drawdoors()
+	addmask()
+end
+
 function init(self)
-	parse(self)
+	time = 0
+	generate()
+end
+
+function update(self, dt)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("generate") then
+		generate()
+	end
 end

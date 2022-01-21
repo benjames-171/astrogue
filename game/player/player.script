@@ -19,7 +19,7 @@ end
 local function move(self)
 	if vmath.length(self.move) > 0 and data.turn == 0 then
 		local pos = data.playerpos + self.move
-		local t = tilemap.get_tile("/level#tilemap", "world", pos.x, pos.y)
+		local t = tilemap.get_tile("level#tilemap", "world", pos.x, pos.y)
 		if t == 0 then
 			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, data.tile2world(pos), go.EASING_LINEAR, 0.2)
 			data.playerpos = pos
@@ -51,7 +51,7 @@ end
 local function clear(self)
 	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTQUAD, 1)
 	data.savegamefile()
-	msg.post("/common/view#clear", "show")
+	msg.post("view#clear", "show")
 	self.lock = INPUT_LOCK
 end
 
@@ -78,8 +78,9 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("position") then
-		go.set_position(message.pos)
-		data.playerpos = data.world2tile(message.pos)
+		go.set_position(data.tile2world(message.pos))
+		data.playerpos = message.pos
+		pprint(message.pos)
 	elseif message_id == hash("quit") then
 		quit2menu(self)
 	end

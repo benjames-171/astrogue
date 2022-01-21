@@ -1,0 +1,34 @@
+tile_set: "/game/core/game.tilesource"
+layers {
+  id: "world"
+  z: 0.0
+  is_visible: 1
+  cell {
+    x: 0
+    y: 0
+    tile: 28
+    h_flip: 0
+    v_flip: 0
+    rotate90: 0
+  }
+  cell {
+    x: 63
+    y: 63
+    tile: 28
+    h_flip: 0
+    v_flip: 0
+    rotate90: 0
+  }
+}
+layers {
+  id: "obj"
+  z: 0.1
+  is_visible: 1
+}
+layers {
+  id: "fog"
+  z: 1.0
+  is_visible: 1
+}
+material: "/builtins/materials/tile_map.material"
+blend_mode: BLEND_MODE_ALPHA
