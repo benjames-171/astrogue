@@ -4,6 +4,7 @@ local INVUL = 150
 local INPUT_LOCK = 70
 
 function init(self)
+	self.snap = true
 	self.move = vmath.vector3()
 	self.invul = INVUL
 	self.lock = 0
@@ -24,6 +25,15 @@ local function move(self)
 			data.playerpos = pos
 			data.turn = 1
 		end
+	end
+end
+
+local function cam(self)
+	if self.snap then
+		msg.post("view#script", "snap_to", {position = go.get_position()})
+		self.snap = false
+	else	
+		msg.post("view#script", "look_at", {position = go.get_position()})
 	end
 end
 
@@ -57,6 +67,7 @@ end
 function update(self, dt)
 	if data.state == data.STATE_PLAYING then
 		move(self)
+		cam(self)
 		flash(self)
 		turn(self)
 	end
