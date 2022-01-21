@@ -1,4 +1,5 @@
 data = require "main.data"
+enemy = require "game.enemy.enemy"
 
 local INVUL = 150
 local INPUT_LOCK = 70
@@ -20,6 +21,13 @@ end
 local function move(self)
 	if vmath.length(self.move) > 0 and data.turn == 0 then
 		local pos = data.playerpos + self.move
+
+		local e = enemy.ontile(data.tile2world(pos))
+		if e then
+			msg.post(e, "hit", {damage = 1})
+			return
+		end
+		
 		local t = tilemap.get_tile("level#tilemap", "world", pos.x, pos.y)
 		local ok = false
 

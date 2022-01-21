@@ -41,6 +41,7 @@ function M.delete(url)
 		if v == url then
 			table.remove(M.url, k)
 			table.remove(M.pos, k)
+			go.delete(url)
 			return
 		end
 	end

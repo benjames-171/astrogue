@@ -3,6 +3,7 @@ local enemy = require "game.enemy.enemy"
 
 function init(self)
 	self.energy = 2
+	self.pos = vmath.vector3(data.world2tile(go.get_position()))
 	--self.type = math.random(1,4)
 	--anim = "enemy"..tostring(self.type)
 	--msg.post("#sprite", "play_animation", {id = hash(anim)})
@@ -13,18 +14,17 @@ local function attack(self)
 end
 
 local function trymove(self, move)
-	local pos = data.world2tile(go.get_position() + move)
+	local pos = self.pos + move
 	local t = tilemap.get_tile("/level#tilemap", "world", pos.x, pos.y)
 	
-	if t == 0 then
-		pos = go.get_position() + move
+	if t < 85 then
 		if pos.x == data.playerpos.x and pos.y == data.playerpos.y then
 			attack(self)
 		else
 			local url = enemy.ontile(pos)
 
 			if url == nil then
-				go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_LINEAR, 0.1)
+				go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, data.tile2world(pos), go.EASING_LINEAR, 0.1)
 				enemy.setpos(go.get_id(), pos)
 			end
 		end
@@ -32,28 +32,27 @@ local function trymove(self, move)
 end
 
 local function ai(self)
-	local pos = data.world2tile(go.get_position())
 	local THRESH = 4
 	
-	if math.abs(pos.x - data.playerpos.x) <= THRESH and math.abs(pos.y - data.playerpos.y) <= THRESH then
+	if math.abs(self.pos.x - data.playerpos.x) <= THRESH and math.abs(self.pos.y - data.playerpos.y) <= THRESH then
 		local move = vmath.vector3()
-		if math.random(1,2) == 1 and pos.x ~= data.playerpos.x then
-			if pos.x > data.playerpos.x then
-				move = vmath.vector3(-data.TILE_SIZE, 0, 0)
-			elseif pos.x < data.playerpos.x then
-				move = vmath.vector3(data.TILE_SIZE, 0, 0)
+		if math.random(1,2) == 1 and self.pos.x ~= data.playerpos.x then
+			if self.pos.x > data.playerpos.x then
+				move = vmath.vector3(-1, 0, 0)
+			elseif self.pos.x < data.playerpos.x then
+				move = vmath.vector3(1, 0, 0)
 			end
 		else
-			if pos.y > data.playerpos.y then
-				move = vmath.vector3(0, -data.TILE_SIZE, 0)
-			elseif pos.y < data.playerpos.y then
-				move = vmath.vector3(0, data.TILE_SIZE, 0)
+			if self.pos.y > data.playerpos.y then
+				move = vmath.vector3(0, -1, 0)
+			elseif self.pos.y < data.playerpos.y then
+				move = vmath.vector3(0, 1, 0)
 			end
 		end
 		trymove(self, move)
 	else
 		local moves = {vmath.vector3(1,0,0), vmath.vector3(-1,0,0), vmath.vector3(0,1,0), vmath.vector3(0,-1,0)}
-		trymove(self, moves[math.random(1,4)] * data.TILE_SIZE)
+		trymove(self, moves[math.random(1,4)])
 	end
 end
 
@@ -63,8 +62,10 @@ function update(self, dt)
 	end
 end
 
-local function hit(self, power)
-	self.energy = self.energy - power
+local function hit(self, damage)
+	enemy.delete(go.get_id())
+	
+--[[	self.energy = self.energy - damage
 	msg.post("/common/fx", "fx", {pos = go.get_position(), fx = data.FX_HIT})
 	if self.energy <= 0 then
 		enemy.delete(go.get_id())
@@ -72,12 +73,12 @@ local function hit(self, power)
 		go.delete()
 	else
 		sound.play("main:/sound#hit1")
-	end
+	end--]]
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("hit") then
-		hit(self, message.power)
+		hit(self, message.damage)
 	end
 end
 
