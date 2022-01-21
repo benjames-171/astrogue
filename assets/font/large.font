@@ -1,10 +1,10 @@
-font: "/builtins/fonts/vera_mo_bd.ttf"
+font: "/assets/font/ambitsek.ttf"
 material: "/builtins/fonts/font.material"
-size: 48
+size: 32
 antialias: 0
 alpha: 1.0
 outline_alpha: 1.0
-outline_width: 4.0
+outline_width: 0.0
 shadow_alpha: 0.0
 shadow_blur: 0
 shadow_x: 0.0

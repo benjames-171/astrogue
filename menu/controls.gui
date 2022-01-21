@@ -70,7 +70,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 150.0
+    y: 160.0
     z: 0.0
     w: 1.0
   }
@@ -124,7 +124,7 @@ nodes {
   layer: ""
   inherit_alpha: true
   alpha: 1.0
-  outline_alpha: 1.0
+  outline_alpha: 0.0
   shadow_alpha: 0.0
   template_node_child: false
   text_leading: 1.0
@@ -133,7 +133,7 @@ nodes {
 nodes {
   position {
     x: -10.0
-    y: 0.0
+    y: -40.0
     z: 0.0
     w: 1.0
   }
@@ -151,7 +151,7 @@ nodes {
   }
   size {
     x: 300.0
-    y: 200.0
+    y: 300.0
     z: 0.0
     w: 1.0
   }
@@ -164,7 +164,9 @@ nodes {
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
   text: "move\n"
+  "\n"
   "action\n"
+  "wait\n"
   "fullscreen\n"
   "quit"
   font: "main"
@@ -190,16 +192,16 @@ nodes {
   layer: ""
   inherit_alpha: true
   alpha: 1.0
-  outline_alpha: 1.0
+  outline_alpha: 0.0
   shadow_alpha: 0.0
   template_node_child: false
-  text_leading: 1.0
+  text_leading: 1.2
   text_tracking: 0.0
 }
 nodes {
   position {
     x: 10.0
-    y: 0.0
+    y: -40.0
     z: 0.0
     w: 1.0
   }
@@ -217,7 +219,7 @@ nodes {
   }
   size {
     x: 300.0
-    y: 200.0
+    y: 300.0
     z: 0.0
     w: 1.0
   }
@@ -229,8 +231,10 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "ARROWS\n"
+  text: "NUMPAD or\n"
+  "ARROWS KEYS\n"
   "X\n"
+  "W\n"
   "F11\n"
   "Q"
   font: "main"
@@ -256,10 +260,10 @@ nodes {
   layer: ""
   inherit_alpha: true
   alpha: 1.0
-  outline_alpha: 1.0
+  outline_alpha: 0.0
   shadow_alpha: 0.0
   template_node_child: false
-  text_leading: 1.0
+  text_leading: 1.2
   text_tracking: 0.0
 }
 material: "/builtins/materials/gui.material"

@@ -7,8 +7,8 @@ collision: ""
 material_tag: "tile"
 animations {
   id: "arrow"
-  start_tile: 2
-  end_tile: 2
+  start_tile: 3
+  end_tile: 3
   playback: PLAYBACK_NONE
   fps: 5
   flip_horizontal: 0
