@@ -11,7 +11,7 @@ background_color {
 }
 nodes {
   position {
-    x: 1024.0
+    x: 1229.0
     y: 0.0
     z: 0.0
     w: 1.0
@@ -35,9 +35,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 0.06666667
+    y: 0.07450981
+    z: 0.13725491
     w: 1.0
   }
   type: TYPE_BOX
@@ -48,6 +48,61 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_SE
   adjust_mode: ADJUST_MODE_FIT
+  layer: ""
+  inherit_alpha: true
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 1.0
+  template_node_child: false
+  size_mode: SIZE_MODE_MANUAL
+}
+nodes {
+  position {
+    x: -184.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 4.0
+    y: 576.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.21568628
+    y: 0.27058825
+    z: 0.4
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: ""
+  id: "line"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_SE
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "bg"
   layer: ""
   inherit_alpha: true
   slice9 {

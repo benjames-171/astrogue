@@ -6,6 +6,7 @@ local INPUT_LOCK = 70
 function init(self)
 	self.snap = true
 	self.move = vmath.vector3()
+	self.door = 0
 	self.invul = INVUL
 	self.lock = 0
 	msg.post(".", "acquire_input_focus")
@@ -20,7 +21,21 @@ local function move(self)
 	if vmath.length(self.move) > 0 and data.turn == 0 then
 		local pos = data.playerpos + self.move
 		local t = tilemap.get_tile("level#tilemap", "world", pos.x, pos.y)
-		if t < 85 then
+		local ok = false
+
+		if t < 85 or (t == 90 or t == 91) then
+			ok = true
+		end
+
+		if ok then
+			if self.door > 0 then
+				tilemap.set_tile("level#tilemap", "world", data.playerpos.x, data.playerpos.y, self.door)
+				self.door = 0
+			elseif t == 90 or t == 91 then
+				self.door = t
+				tilemap.set_tile("level#tilemap", "world", pos.x, pos.y, self.door - 14)
+			end
+			
 			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, data.tile2world(pos), go.EASING_LINEAR, 0.1)
 			data.playerpos = pos
 			data.turn = 1
