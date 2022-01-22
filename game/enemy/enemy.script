@@ -18,7 +18,7 @@ local function trymove(self, move)
 	local pos = self.pos + move
 	local t = tilemap.get_tile("/level#tilemap", "world", pos.x, pos.y)
 	
-	if t < 85 then
+	if t < 71 then
 		if pos.x == data.playerpos.x and pos.y == data.playerpos.y then
 			attack(self)
 		else

@@ -24,7 +24,6 @@ local function clear()
 	for y = sy, h+sy-1 do
 		for x = sx, w+sx-1 do
 			tilemap.set_tile("#tilemap", "world", x, y, 0)
-			tilemap.set_tile("#tilemap", "obj", x, y, 0)
 			tilemap.set_tile("#tilemap", "fog", x, y, 0)
 		end
 	end
@@ -278,10 +277,12 @@ local function populate()
 	msg.post("/player", "position", {pos = pos}) -- start position
 
 	pos = getroomcentre(rooms[2])
-	tilemap.set_tile("#tilemap", "world", pos.x, pos.y, 7) -- exit
+	tilemap.set_tile("#tilemap", "world", pos.x, pos.y, 71) -- laptop
 
 	for n = 2, MAX_ROOMS - 4 do
-		local pos = randinroom(rooms[n], 0)
+		local pos = randinroom(rooms[n], 1)
+		tilemap.set_tile("#tilemap", "world", pos.x, pos.y, 72) -- crate
+		pos = randinroom(rooms[n], 0)
 		msg.post("enemy", "spawn", {pos = data.tile2world(pos)})
 	end
 end
@@ -349,8 +350,8 @@ local function generate()
 	doors()
 	cull()
 	drawrooms()
-	populate()
 	decorate()
+	populate()
 	drawdoors()
 	addmask()
 
