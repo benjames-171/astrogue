@@ -13,7 +13,7 @@ end
 
 function update(self, dt)
 	if data.state == data.STATE_PAUSE then
-		local pos = vmath.vector3(self.arrowpos[self.handpos].x - 32, self.arrowpos[self.handpos].y, 0)
+		local pos = vmath.vector3(self.arrowpos[self.handpos].x - 24, self.arrowpos[self.handpos].y, 0)
 		gui.set_position(gui.get_node("arrow"), pos)
 	end
 end
@@ -21,7 +21,6 @@ end
 local function close(self)
 	gui.set_enabled(self.node, false)
 	data.state = data.STATE_PLAYING
-	msg.post("main:/handler", "set_time_step", {factor = 1, mode = 0})
 end
 
 local function input(self, action_id, action)
@@ -38,7 +37,6 @@ local function input(self, action_id, action)
 			msg.post("level", "restart")
 			close(self)
 		elseif self.handpos == 3 then
-			msg.post("main:/handler", "set_time_step", {factor = 1, mode = 0})
 			msg.post("player", "quit")
 		end
 	elseif action_id == hash("exit") and action.pressed then
@@ -50,7 +48,7 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("show") then
 		gui.set_enabled(self.node, true)
 		data.state = data.STATE_PAUSE
-		msg.post("main:/handler", "set_time_step", {factor = 0, mode = 0})
+		self.handpos = 1
 	elseif message_id == hash("input") then
 		input(self, message.action_id, message.action)
 	end

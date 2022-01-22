@@ -17,6 +17,7 @@ end
 
 local function startgame(self)
 	msg.post("main:/handler", "show_game")
+	sound.play("main:/sound#exit")
 	data.level = 1
 	data.hp = 100
 	data.plev = 1
@@ -36,7 +37,7 @@ end
 
 function update(self, dt)
 	if data.state == data.STATE_MENU then
-		local pos = vmath.vector3(self.arrowpos[self.handpos].x - 32, self.arrowpos[self.handpos].y + 1, 0)
+		local pos = vmath.vector3(self.arrowpos[self.handpos].x - 24, self.arrowpos[self.handpos].y + 1, 0)
 		gui.set_position(gui.get_node("arrow"), pos)
 	end
 end

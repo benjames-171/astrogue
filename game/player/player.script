@@ -61,7 +61,7 @@ local function move(self)
 				end
 				tilemap.set_tile("level#tilemap", "world", pos.x, pos.y, drop)
 			end
-		elseif t == 57 then
+		elseif t == 57 or t == 60 then
 			tilemap.set_tile("level#tilemap", "world", pos.x, pos.y, 0)
 			msg.post("view#game", "status", {text = "PICKED UP SOME SCRAP"})
 			sound.play("main:/sound#blip")
