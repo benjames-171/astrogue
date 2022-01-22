@@ -28,6 +28,9 @@ function update(self, dt)
 		data.xp = 0
 	end
 
+	if data.hp > 100 then data.hp = 100
+	end
+
 	gui.set_scale(gui.get_node("hp"), vmath.vector3(data.hp/100, 1, 1))
 	gui.set_scale(gui.get_node("xp"), vmath.vector3(data.xp/100, 1, 1))
 	gui.set_text(gui.get_node("plev"), tostring(data.plev))

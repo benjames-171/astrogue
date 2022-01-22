@@ -1,6 +1,6 @@
 local data = require "main.data"
 
-local SPEED = 0.15
+local SPEED = 0.05
 
 function init(self)
 	msg.post("#camera", "acquire_camera_focus")
