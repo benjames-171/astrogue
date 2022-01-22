@@ -186,7 +186,7 @@ end
 local function input_playing(self, action_id, action)
 	if not action.pressed then return
 	end
-	
+
 	if action_id == hash("left") then
 		self.move.x = -1
 	elseif action_id == hash("right") then
@@ -233,12 +233,7 @@ end
 
 local function input_gameover(self, action_id, action)
 	if action_id == hash("exit") and action.pressed then
-		quit2menu(self)
-	end
-end
-
-local function input_complete(self, action_id, action)
-	if action_id == hash("exit") and action.pressed then
+		enemy.deleteall()
 		quit2menu(self)
 	end
 end
@@ -248,11 +243,7 @@ function on_input(self, action_id, action)
 		input_playing(self, action_id, action)
 	elseif data.state == data.STATE_PAUSE then
 		msg.post("view#pause", "input", {action_id = action_id, action = action})
-	elseif data.state == data.STATE_CLEAR then
-		input_clear(self, action_id, action)
 	elseif data.state == data.STATE_GAMEOVER then
 		input_gameover(self, action_id, action)
-	elseif data.state == data.STATE_COMPLETE then
-		input_complete(self, action_id, action)
 	end
 end
