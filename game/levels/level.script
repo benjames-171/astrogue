@@ -3,7 +3,7 @@ local enemy = require "game.enemy.enemy"
 
 local SIZE_W = 64
 local SIZE_H = 64
-local MAX_ROOMS = 16
+local MAX_ROOMS = 9
 local TRIES = 10
 
 local rooms = {}
@@ -279,7 +279,11 @@ local function populate()
 	pos = getroomcentre(rooms[2])
 	tilemap.set_tile("#tilemap", "world", pos.x, pos.y, 71) -- laptop
 
-	for n = 2, MAX_ROOMS - 4 do
+	pos = getroomcentre(rooms[3])
+	tilemap.set_tile("#tilemap", "world", pos.x, pos.y, 58) -- exit
+	data.exit = pos
+
+	for n = 3, MAX_ROOMS - 4 do
 		local r = math.random(-1,1)
 		for f = 0, r do
 			pos = randinroom(rooms[n], 0)

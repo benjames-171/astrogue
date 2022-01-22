@@ -18,6 +18,13 @@ local function quit2menu(self)
 	msg.post("main:/handler", "show_menu")
 end
 
+local function clear(self)
+	go.cancel_animations(".", "position")
+	self.snap = true
+	data.level = data.level + 1
+	msg.post("level", "restart")
+end
+
 local function move(self)
 	if vmath.length(self.move) > 0 and data.turn == 0 then
 		local pos = data.playerpos + self.move
@@ -36,6 +43,9 @@ local function move(self)
 		end
 
 		if t == 71 then
+			tilemap.set_tile("level#tilemap", "world", pos.x, pos.y, 72)
+			tilemap.set_tile("level#tilemap", "world", data.exit.x, data.exit.y, 59)
+			msg.post("view#game", "status", {text = "EXIT OPEN"})
 			ok = false
 		elseif t == 73 then
 			ok = false
@@ -53,6 +63,8 @@ local function move(self)
 			sound.play("main:/sound#blip")
 			data.hp = data.hp + 10
 			data.scrap = data.scrap + 1
+		elseif t == 59 then
+			timer.delay(0.15, false, clear)
 		end
 
 		if ok then
@@ -89,12 +101,6 @@ local function flash(self)
 			msg.post("#sprite", "disable")
 		end
 	end
-end
-
-local function clear(self)
-	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTQUAD, 1)
-	data.savegamefile()
-	msg.post("view#clear", "show")
 end
 
 local function turn(self)
