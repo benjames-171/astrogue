@@ -20,6 +20,8 @@ end
 
 local function clear(self)
 	go.cancel_animations(".", "position")
+	local str = "EXITING LEVEL "..tostring(data.level)
+	msg.post("view#game", "status", {text = str})
 	self.snap = true
 	data.level = data.level + 1
 	msg.post("level", "restart")
@@ -32,6 +34,7 @@ local function move(self)
 		local e = enemy.ontile(pos)
 		if e then
 			msg.post(e, "hit", {damage = 1})
+			data.turn = 1
 			return
 		end
 		
@@ -46,6 +49,7 @@ local function move(self)
 			tilemap.set_tile("level#tilemap", "world", pos.x, pos.y, 72)
 			tilemap.set_tile("level#tilemap", "world", data.exit.x, data.exit.y, 59)
 			msg.post("view#game", "status", {text = "EXIT OPEN"})
+			sound.play("main:/sound#beep")
 			ok = false
 		elseif t == 73 then
 			ok = false
@@ -65,6 +69,7 @@ local function move(self)
 			data.scrap = data.scrap + 1
 		elseif t == 59 then
 			timer.delay(0.15, false, clear)
+			sound.play("main:/sound#exit")
 		end
 
 		if ok then

@@ -2,22 +2,23 @@ local data = require "main.data"
 local enemy = require "game.enemy.enemy"
 
 function init(self)
-	self.energy = 2
+	self.hp = math.random(2,4)
 	self.pos = vmath.vector3(data.world2tile(go.get_position()))
-	msg.post("#sprite", "disable")
-	self.type = math.random(1, 5)
-	anim = "e"..tostring(self.type)
+
+	local type = math.random(1,5)
+	anim = "e"..tostring(type)
 	sprite.play_flipbook("#sprite", anim)
+	msg.post("#sprite", "disable")
 end
 
 local function attack(self)
-	msg.post("player", "hit", {damage = 5})
+	msg.post("player", "hit", {damage = math.random(5,10)})
 end
 
 local function trymove(self, move)
 	local pos = self.pos + move
 	local t = tilemap.get_tile("/level#tilemap", "world", pos.x, pos.y)
-	
+
 	if t < 71 then
 		if pos.x == data.playerpos.x and pos.y == data.playerpos.y then
 			attack(self)
@@ -26,11 +27,11 @@ local function trymove(self, move)
 
 			if url == nil then
 				go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, data.tile2world(pos), go.EASING_LINEAR, 0.1)
-				enemy.setpos(go.get_id(), pos)
 				self.pos = pos
 			end
 		end
 	end
+	enemy.setpos(go.get_id(), self.pos)
 end
 
 local function ai(self)
@@ -89,12 +90,16 @@ function update(self, dt)
 end
 
 local function hit(self, damage)
-	enemy.delete(go.get_id())
-	msg.post("view#game", "status", {text = "DESTROYED A ROBOT"})
+	self.hp = self.hp - damage
 	msg.post("effect", "explode", {pos = go.get_position()})
 	sound.play("main:/sound#hit1")
-	data.xp = data.xp + 10
-	data.kills = data.kills + 1
+	
+	if self.hp <= 0 then
+		enemy.delete(go.get_id())
+		msg.post("view#game", "status", {text = "DESTROYED A ROBOT"})
+		data.xp = data.xp + 10
+		data.kills = data.kills + 1
+	end
 end
 
 function on_message(self, message_id, message, sender)

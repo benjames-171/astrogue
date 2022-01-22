@@ -3,7 +3,7 @@ local enemy = require "game.enemy.enemy"
 
 local SIZE_W = 64
 local SIZE_H = 64
-local MAX_ROOMS = 9
+local MAX_ROOMS = 24
 local TRIES = 10
 
 local rooms = {}
@@ -351,7 +351,7 @@ end
 
 local function generate()
 	min = 3
-	max = 8
+	max = 7
 
 	clear()
 	procgen()
@@ -366,7 +366,7 @@ local function generate()
 	drawdoors()
 	addmask()
 
-	local str = "ENTERED LEVEL "..tostring(data.level)
+	local str = "ENTERING LEVEL "..tostring(data.level)
 	msg.post("view#game", "status", {text = str})
 end
 
