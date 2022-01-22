@@ -11,7 +11,7 @@ function init(self)
 end
 
 local function attack(self)
-	msg.post("player", "hit")
+	msg.post("player", "hit", {damage = 5})
 end
 
 local function trymove(self, move)
@@ -27,30 +27,32 @@ local function trymove(self, move)
 			if url == nil then
 				go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, data.tile2world(pos), go.EASING_LINEAR, 0.1)
 				enemy.setpos(go.get_id(), pos)
+				self.pos = pos
 			end
 		end
 	end
 end
 
 local function ai(self)
-	local THRESH = 4
-	
+	local THRESH = 2
+
 	if math.abs(self.pos.x - data.playerpos.x) <= THRESH and math.abs(self.pos.y - data.playerpos.y) <= THRESH then
 		local move = vmath.vector3()
-		if math.random(1,2) == 1 and self.pos.x ~= data.playerpos.x then
+		
+		if math.random(1, 2) > 1 then
 			if self.pos.x > data.playerpos.x then
-				move = vmath.vector3(-1, 0, 0)
+				move.x = -1
 			elseif self.pos.x < data.playerpos.x then
-				move = vmath.vector3(1, 0, 0)
+				move.x = 1
 			end
-		else
+
 			if self.pos.y > data.playerpos.y then
-				move = vmath.vector3(0, -1, 0)
+				move.y = -1
 			elseif self.pos.y < data.playerpos.y then
-				move = vmath.vector3(0, 1, 0)
+				move.y = 1
 			end
+			trymove(self, move)
 		end
-		trymove(self, move)
 	else
 		local moves = {vmath.vector3(1,0,0), vmath.vector3(-1,0,0), vmath.vector3(0,1,0), vmath.vector3(0,-1,0)}
 		trymove(self, moves[math.random(1,4)])
@@ -80,18 +82,10 @@ end
 
 local function hit(self, damage)
 	enemy.delete(go.get_id())
-	msg.post("view#game", "status", {text = "KILLED A MONSTER"})
+	msg.post("view#game", "status", {text = "DESTROYED A ROBOT"})
+	msg.post("effect", "explode", {pos = go.get_position()})
+	sound.play("main:/sound#hit1")
 	data.xp = data.xp + 10
-	
---[[	self.energy = self.energy - damage
-	msg.post("/common/fx", "fx", {pos = go.get_position(), fx = data.FX_HIT})
-	if self.energy <= 0 then
-		enemy.delete(go.get_id())
-		sound.play("main:/sound#hit2")
-		go.delete()
-	else
-		sound.play("main:/sound#hit1")
-	end--]]
 end
 
 function on_message(self, message_id, message, sender)

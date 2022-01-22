@@ -22,12 +22,13 @@ function update(self, dt)
 		self.time = 0
 	end
 
-	gui.set_scale(gui.get_node("hp"), vmath.vector3(data.hp/100, 1, 1))
 	if data.xp >= 100 then 
 		status(self, "PLAYER GAINED A LEVEL")
 		data.plev = data.plev + 1
 		data.xp = 0
 	end
+
+	gui.set_scale(gui.get_node("hp"), vmath.vector3(data.hp/100, 1, 1))
 	gui.set_scale(gui.get_node("xp"), vmath.vector3(data.xp/100, 1, 1))
 	gui.set_text(gui.get_node("plev"), tostring(data.plev))
 end

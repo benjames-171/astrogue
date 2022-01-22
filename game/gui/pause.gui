@@ -88,7 +88,7 @@ nodes {
   }
   size {
     x: 70.0
-    y: 40.0
+    y: 46.0
     z: 0.0
     w: 1.0
   }
@@ -124,8 +124,8 @@ nodes {
 }
 nodes {
   position {
-    x: 0.0
-    y: 42.0
+    x: 2.0
+    y: 56.0
     z: 0.0
     w: 1.0
   }
@@ -187,8 +187,8 @@ nodes {
 }
 nodes {
   position {
-    x: -69.0
-    y: -3.0
+    x: -67.0
+    y: 11.0
     z: 0.0
     w: 1.0
   }
@@ -206,7 +206,7 @@ nodes {
   }
   size {
     x: 170.0
-    y: 24.0
+    y: 32.0
     z: 0.0
     w: 1.0
   }
@@ -250,8 +250,8 @@ nodes {
 }
 nodes {
   position {
-    x: -69.0
-    y: -37.0
+    x: -67.0
+    y: -21.0
     z: 0.0
     w: 1.0
   }
@@ -269,7 +269,70 @@ nodes {
   }
   size {
     x: 170.0
-    y: 24.0
+    y: 32.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.9098039
+    y: 0.8627451
+    z: 0.84705883
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "RESTART"
+  font: "main"
+  id: "2"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_W
+  outline {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  shadow {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_STRETCH
+  line_break: false
+  parent: "container"
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: -67.0
+    y: -53.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 170.0
+    y: 32.0
     z: 0.0
     w: 1.0
   }
@@ -283,7 +346,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: "QUIT"
   font: "main"
-  id: "2"
+  id: "3"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W

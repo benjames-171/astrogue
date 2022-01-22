@@ -1,8 +1,9 @@
 local data = require "main.data"
+local enemy = require "game.enemy.enemy"
 
 local SIZE_W = 64
 local SIZE_H = 64
-local MAX_ROOMS = 35
+local MAX_ROOMS = 25
 local TRIES = 10
 
 local rooms = {}
@@ -273,7 +274,7 @@ end
 local function populate()
 	local pos = getroomcentre(rooms[1])
 
-	pos.z = 1
+	pos.z = 0.5
 	msg.post("/player", "position", {pos = pos}) -- start position
 
 	pos = getroomcentre(rooms[2])
@@ -337,8 +338,8 @@ local function decorate(self)
 end
 
 local function generate()
-	min = 1
-	max = 5
+	min = 3
+	max = 6
 
 	clear()
 	procgen()
@@ -366,7 +367,9 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("generate") then
+	if message_id == hash("restart") then
 		generate()
+		enemy.deleteall()
+		msg.post("view#shutter", "fadein")
 	end
 end

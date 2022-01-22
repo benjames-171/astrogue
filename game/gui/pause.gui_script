@@ -7,6 +7,7 @@ function init(self)
 	self.arrowpos = {
 		gui.get_position(gui.get_node("1")),
 		gui.get_position(gui.get_node("2")),
+		gui.get_position(gui.get_node("3")),
 	}
 end
 
@@ -26,14 +27,17 @@ end
 local function input(self, action_id, action)
 	if action_id == hash("up") and action.pressed then
 		self.handpos = self.handpos - 1
-		if self.handpos < 1 then self.handpos = 2 end
+		if self.handpos < 1 then self.handpos = 3 end
 	elseif action_id == hash("down") and action.pressed then
 		self.handpos = self.handpos + 1
-		if self.handpos > 2 then self.handpos = 1 end
+		if self.handpos > 3 then self.handpos = 1 end
 	elseif action_id == hash("action") and action.pressed then
 		if self.handpos == 1 then
 			close(self)
 		elseif self.handpos == 2 then
+			msg.post("level", "restart")
+			close(self)
+		elseif self.handpos == 3 then
 			msg.post("main:/handler", "set_time_step", {factor = 1, mode = 0})
 			msg.post("player", "quit")
 		end
