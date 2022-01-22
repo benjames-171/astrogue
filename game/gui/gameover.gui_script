@@ -9,6 +9,7 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("show") then
+		gui.set_text(gui.get_node("died"), "died on level "..data.level)
 		local str = string.format("%s\n%d\n%d\n%d", data.ms2str(data.time), data.turnstaken, data.kills, data.scrap)
 		gui.set_text(gui.get_node("right"), str)
 		ui.show(self.node)
