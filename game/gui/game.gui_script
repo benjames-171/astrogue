@@ -24,6 +24,7 @@ function update(self, dt)
 
 	if data.xp >= 100 then 
 		status(self, "PLAYER GAINED A LEVEL")
+		sound.play("main:/sound#chirp")
 		data.plev = data.plev + 1
 		data.xp = 0
 	end

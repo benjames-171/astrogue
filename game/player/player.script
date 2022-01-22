@@ -33,7 +33,7 @@ local function move(self)
 
 		local e = enemy.ontile(pos)
 		if e then
-			msg.post(e, "hit", {damage = 1})
+			msg.post(e, "hit", {damage = math.random(2,5) + data.plev})
 			data.turn = 1
 			return
 		end
