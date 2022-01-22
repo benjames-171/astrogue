@@ -24,6 +24,7 @@ M.turn = 0
 M.hp = 0
 M.xp = 0
 M.plev = 1
+M.skip = false
 
 M.time = 0
 M.turnstaken = 0

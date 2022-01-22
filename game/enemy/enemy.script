@@ -39,7 +39,7 @@ local function ai(self)
 	if math.abs(self.pos.x - data.playerpos.x) <= THRESH and math.abs(self.pos.y - data.playerpos.y) <= THRESH then
 		local move = vmath.vector3()
 		
-		if math.random(1, 2) > 1 then
+		if math.random(1, data.level+1) > 1 then
 			if self.pos.x > data.playerpos.x then
 				move.x = -1
 			elseif self.pos.x < data.playerpos.x then
@@ -73,6 +73,7 @@ local function look(self)
 	if pos.x ~= player.x or pos.y ~= player.y then
 		local cast = physics.raycast(pos, player, {hash("world"), hash("player")}, false)
 		if cast == nil or cast.group == hash("player") then
+			data.skip = false
 			msg.post("#sprite", "enable")
 		else
 			msg.post("#sprite", "disable")
