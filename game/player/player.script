@@ -7,9 +7,9 @@ local INPUT_LOCK = 70
 function init(self)
 	self.snap = true
 	self.move = vmath.vector3()
+	self.last = vmath.vector3()
 	self.door = 0
 	self.invul = INVUL
-	self.lock = 0
 	msg.post(".", "acquire_input_focus")
 end
 
@@ -75,7 +75,6 @@ local function clear(self)
 	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTQUAD, 1)
 	data.savegamefile()
 	msg.post("view#clear", "show")
-	self.lock = INPUT_LOCK
 end
 
 local function turn(self)
@@ -91,7 +90,8 @@ local function fog(self)
 	for r = 8, 64, 8 do
 		for n = 0, math.pi * 2, 0.1 do
 			local p = vmath.vector3(math.cos(n) * r, math.sin(n) * r, 0)
-			cast = physics.raycast(go.get_position(), go.get_position() + p, {hash("world")}, false)
+			local o = self.last * 3
+			cast = physics.raycast(go.get_position() + o, go.get_position() + p, {hash("world")}, false)
 			if cast ~= nil then
 				local v = vmath.normalize(p)
 				local pos = data.world2tile(cast.position + (v * 6))
@@ -113,8 +113,10 @@ function update(self, dt)
 		turn(self)
 	end
 
+	if vmath.length(self.move) > 0 then
+		self.last = self.move
+	end
 	self.move = vmath.vector3()
-	if self.lock > 0 then self.lock = self.lock - 1 end
 end
 
 function on_message(self, message_id, message, sender)
@@ -183,8 +185,6 @@ local function input_complete(self, action_id, action)
 end
 
 function on_input(self, action_id, action)
-	if self.lock > 0 then return
-	end	
 	if data.state == data.STATE_PLAYING then
 		input_playing(self, action_id, action)
 	elseif data.state == data.STATE_PAUSE then
