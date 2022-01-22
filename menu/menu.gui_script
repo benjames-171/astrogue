@@ -21,6 +21,12 @@ local function startgame(self)
 	data.hp = 100
 	data.plev = 1
 	data.xp = 0
+
+	data.time = 0
+	data.turnstaken = 0
+	data.kills = 0
+	data.scrap = 0
+	
 	data.state = data.STATE_PLAYING
 end	
 

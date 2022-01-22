@@ -52,6 +52,7 @@ local function move(self)
 			msg.post("view#game", "status", {text = "PICKED UP SOME SCRAP"})
 			sound.play("main:/sound#blip")
 			data.hp = data.hp + 10
+			data.scrap = data.scrap + 1
 		end
 
 		if ok then
@@ -101,6 +102,7 @@ local function turn(self)
 		data.turn = data.turn + 1
 		if data.turn > 20 then
 			data.turn = 0
+			data.turnstaken = data.turnstaken + 1
 		end
 	end
 end
@@ -130,6 +132,7 @@ function update(self, dt)
 		cam(self)
 		flash(self)
 		turn(self)
+		data.time = data.time + dt
 	end
 
 	if vmath.length(self.move) > 0 then
@@ -190,7 +193,12 @@ local function input_playing(self, action_id, action)
 	elseif action_id == hash("exit") and action.pressed then
 		msg.post("view#pause", "show")
 	elseif action_id == hash("debug") and action.pressed then
-		clear(self)
+		data.hp = 0
+		data.time = math.random(1000,10000)
+		data.turnstaken = math.random(0,10000)
+		data.kills = math.random(0,10000)
+		data.scrap = math.random(0,10000)
+		hit(self, 0)
 	end
 end
 

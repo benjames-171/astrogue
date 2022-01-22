@@ -280,9 +280,11 @@ local function populate()
 	tilemap.set_tile("#tilemap", "world", pos.x, pos.y, 71) -- laptop
 
 	for n = 2, MAX_ROOMS - 4 do
-		local pos = randinroom(rooms[n], 1)
-		tilemap.set_tile("#tilemap", "world", pos.x, pos.y, 73) -- crate
-		pos = randinroom(rooms[n], 0)
+		if math.random(1,4) == 1 then
+			local pos = randinroom(rooms[n], 1)
+			tilemap.set_tile("#tilemap", "world", pos.x, pos.y, 73) -- crate
+		end
+		local pos = randinroom(rooms[n], 0)
 		msg.post("enemy", "spawn", {pos = data.tile2world(pos)})
 	end
 end
