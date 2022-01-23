@@ -20,6 +20,8 @@ end
 
 local function close(self)
 	gui.set_enabled(self.node, false)
+	sound.pause("main:/sound#music2", false)
+	sound.play("main:/sound#beep")
 	data.state = data.STATE_PLAYING
 end
 
@@ -27,12 +29,15 @@ local function input(self, action_id, action)
 	if action_id == hash("up") and action.pressed then
 		self.handpos = self.handpos - 1
 		if self.handpos < 1 then self.handpos = 3 end
+		sound.play("main:/sound#menu")
 	elseif action_id == hash("down") and action.pressed then
 		self.handpos = self.handpos + 1
 		if self.handpos > 3 then self.handpos = 1 end
+		sound.play("main:/sound#menu")
 	elseif action_id == hash("action") and action.pressed then
 		if self.handpos == 1 then
 			close(self)
+			sound.play("main:/sound#beep")
 		elseif self.handpos == 2 then
 			msg.post("level", "restart")
 			msg.post("player", "restart")
@@ -49,6 +54,7 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("show") then
 		gui.set_enabled(self.node, true)
 		data.state = data.STATE_PAUSE
+		sound.pause("main:/sound#music2", true)
 		self.handpos = 1
 	elseif message_id == hash("input") then
 		input(self, message.action_id, message.action)
