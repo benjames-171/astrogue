@@ -22,5 +22,6 @@ max_tile_count = 4096
 
 [project]
 title = mini jam 98
+version = v1.0i
 dependencies#0 = https://github.com/subsoap/defos/archive/master.zip
 

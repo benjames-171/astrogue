@@ -10,10 +10,12 @@ function init(self)
 	self.last = vmath.vector3()
 	self.door = 0
 	self.invul = INVUL
+	sound.play("main:/sound#music2", {gain = 0.4})
 	msg.post(".", "acquire_input_focus")
 end
 
 local function quit2menu(self)
+	enemy.deleteall()
 	msg.post("main:/sound", "stop_sound")
 	msg.post("main:/handler", "show_menu")
 end
@@ -27,13 +29,20 @@ local function clear(self)
 	msg.post("level", "restart")
 end
 
+local function minigame(self)
+	msg.post("mini", "enable")
+	msg.post("mini", "show")
+	sound.play("main:/sound#beep")
+	data.state = data.STATE_MINI
+end
+
 local function move(self)
 	if vmath.length(self.move) > 0 and data.turn == 0 then
 		local pos = data.playerpos + self.move
 
 		local e = enemy.ontile(pos)
 		if e then
-			msg.post(e, "hit", {damage = math.random(2,5) + data.plev})
+			msg.post(e, "hit", {damage = math.random(2, 4) + data.plev})
 			data.turn = 1
 			return
 		end
@@ -210,12 +219,7 @@ local function input_playing(self, action_id, action)
 	elseif action_id == hash("exit") and action.pressed then
 		msg.post("view#pause", "show")
 	elseif action_id == hash("debug") and action.pressed then
-		data.hp = 0
-		data.time = math.random(1000,10000)
-		data.turnstaken = math.random(0,10000)
-		data.kills = math.random(0,10000)
-		data.scrap = math.random(0,10000)
-		hit(self, 0)
+		minigame(self)
 	end
 end
 
@@ -233,7 +237,6 @@ end
 
 local function input_gameover(self, action_id, action)
 	if action_id == hash("exit") and action.pressed then
-		enemy.deleteall()
 		quit2menu(self)
 	end
 end
@@ -243,6 +246,8 @@ function on_input(self, action_id, action)
 		input_playing(self, action_id, action)
 	elseif data.state == data.STATE_PAUSE then
 		msg.post("view#pause", "input", {action_id = action_id, action = action})
+	elseif data.state == data.STATE_MINI then
+		msg.post("mini", "input", {action_id = action_id, action = action})
 	elseif data.state == data.STATE_GAMEOVER then
 		input_gameover(self, action_id, action)
 	end

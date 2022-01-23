@@ -21,7 +21,6 @@ function init(self)
 		local r = math.random()
 	end
 	--data.fullscreen(self)
-	data.loadgamefile()
 end
 
 function on_message(self, message_id, message,sender)

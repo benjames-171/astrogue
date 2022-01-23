@@ -22,7 +22,7 @@ layers {
 }
 layers {
   id: "fog"
-  z: 1.0
+  z: 0.6
   is_visible: 1
 }
 material: "/builtins/materials/tile_map.material"
