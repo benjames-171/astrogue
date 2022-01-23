@@ -35,6 +35,7 @@ local function input(self, action_id, action)
 			close(self)
 		elseif self.handpos == 2 then
 			msg.post("level", "restart")
+			msg.post("player", "restart")
 			close(self)
 		elseif self.handpos == 3 then
 			msg.post("player", "quit")

@@ -29,13 +29,6 @@ local function clear(self)
 	msg.post("level", "restart")
 end
 
-local function minigame(self)
-	msg.post("mini", "enable")
-	msg.post("mini", "show")
-	sound.play("main:/sound#beep")
-	data.state = data.STATE_MINI
-end
-
 local function move(self)
 	if vmath.length(self.move) > 0 and data.turn == 0 then
 		local pos = data.playerpos + self.move
@@ -66,7 +59,9 @@ local function move(self)
 			sound.play("main:/sound#hit1")
 			if math.random(1,5) > 1 then
 				local drop = 0
-				if math.random(1,3) == 1 then drop = 57
+				local r = math.random(1,10)
+				if r == 10 then drop = 61
+				elseif r >= 8 then drop = 57
 				end
 				tilemap.set_tile("level#tilemap", "world", pos.x, pos.y, drop)
 			end
@@ -76,6 +71,11 @@ local function move(self)
 			sound.play("main:/sound#blip")
 			data.hp = data.hp + 10
 			data.scrap = data.scrap + 1
+		elseif t == 61 then
+			tilemap.set_tile("level#tilemap", "world", pos.x, pos.y, 0)
+			msg.post("view#game", "status", {text = "PICKED UP A DATA MODULE"})
+			sound.play("main:/sound#blip")
+			data.xp = data.xp + math.random(5,10)
 		elseif t == 59 then
 			timer.delay(0.15, false, clear)
 			sound.play("main:/sound#exit")
@@ -189,6 +189,8 @@ function on_message(self, message_id, message, sender)
 		quit2menu(self)
 	elseif message_id == hash("hit") then
 		hit(self, message.damage)
+	elseif message_id == hash("restart") then
+		self.door = 0
 	end
 end
 
@@ -219,7 +221,7 @@ local function input_playing(self, action_id, action)
 	elseif action_id == hash("exit") and action.pressed then
 		msg.post("view#pause", "show")
 	elseif action_id == hash("debug") and action.pressed then
-		minigame(self)
+
 	end
 end
 
@@ -246,8 +248,6 @@ function on_input(self, action_id, action)
 		input_playing(self, action_id, action)
 	elseif data.state == data.STATE_PAUSE then
 		msg.post("view#pause", "input", {action_id = action_id, action = action})
-	elseif data.state == data.STATE_MINI then
-		msg.post("mini", "input", {action_id = action_id, action = action})
 	elseif data.state == data.STATE_GAMEOVER then
 		input_gameover(self, action_id, action)
 	end
