@@ -21,7 +21,7 @@ cssfile = /builtins/manifests/web/dark_theme.css
 max_tile_count = 4096
 
 [project]
-title = mini jam 98
-version = v1.0i
+title = Astrogue
+version = v1.01i
 dependencies#0 = https://github.com/subsoap/defos/archive/master.zip
 

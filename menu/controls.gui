@@ -169,7 +169,7 @@ nodes {
   "\n"
   "wait\n"
   "fullscreen\n"
-  "quit"
+  "pause"
   font: "main"
   id: "left"
   xanchor: XANCHOR_NONE
@@ -238,7 +238,7 @@ nodes {
   "X\n"
   "W\n"
   "F11\n"
-  "Q"
+  "ESC"
   font: "main"
   id: "right"
   xanchor: XANCHOR_NONE

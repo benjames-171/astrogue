@@ -174,7 +174,10 @@ function hit(self, d)
 	if data.hp <= 0 then
 		data.hp = 0
 		data.turn = -1
+		sound.play("main:/sound#dead")
+		msg.post("main:/sound#music2", "stop_sound")
 		msg.post("view#gameover", "show")
+		msg.post("view#game", "status", {text = "PLAYER DIED"})
 		go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 0.5)
 	end
 end
@@ -214,15 +217,13 @@ local function input_playing(self, action_id, action)
 		self.move = vmath.vector3(-1,-1,0)
 	elseif action_id == hash("downright") then
 		self.move = vmath.vector3(1,-1,0)
-	elseif action_id == hash("action") and action.pressed then
-
 	elseif action_id == hash("wait") and action.pressed then
 		data.turn = 1
+		data.turnstaken = data.turnstaken + 1
+		msg.post("view#game", "status", {text = "SKIPPED A TURN"})
 	elseif action_id == hash("exit") and action.pressed then
 		msg.post("view#pause", "show")
 		sound.play("main:/sound#beep")
-	elseif action_id == hash("debug") and action.pressed then
-
 	end
 end
 
