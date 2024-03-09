@@ -1,0 +1,8 @@
+local data = require "main.data"
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("play") then
+		sound.play("#"..message.id)
+	end
+end
+

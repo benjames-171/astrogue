@@ -19,7 +19,7 @@ function on_input(self, action_id, action)
 		if (action_id == hash("action") or action_id == hash("exit")) and action.pressed then
 			ui.hide(self.node)
 			msg.post("#menu", "show", {})
-			sound.play("main:/sound#chirp")
+			data.sound("chirp")
 		end
 	end
 end

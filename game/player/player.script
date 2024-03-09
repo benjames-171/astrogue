@@ -10,7 +10,7 @@ function init(self)
 	self.last = vmath.vector3()
 	self.door = 0
 	self.invul = INVUL
-	sound.play("main:/sound#music2", {gain = 0.4})
+	data.sound("music2", {gain = 0.4})
 	msg.post(".", "acquire_input_focus")
 end
 
@@ -51,12 +51,12 @@ local function move(self)
 			tilemap.set_tile("level#tilemap", "world", pos.x, pos.y, 72)
 			tilemap.set_tile("level#tilemap", "world", data.exit.x, data.exit.y, 59)
 			msg.post("view#game", "status", {text = "EXIT OPEN"})
-			sound.play("main:/sound#beep")
+			data.sound("beep")
 			ok = false
 		elseif t == 73 then
 			ok = false
 			msg.post("effect", "explode", {pos = data.tile2world(pos)})
-			sound.play("main:/sound#hit1")
+			data.sound("hit1")
 			if math.random(1,5) > 1 then
 				local drop = 0
 				local r = math.random(1,10)
@@ -68,17 +68,17 @@ local function move(self)
 		elseif t == 57 or t == 60 then
 			tilemap.set_tile("level#tilemap", "world", pos.x, pos.y, 0)
 			msg.post("view#game", "status", {text = "PICKED UP SOME SCRAP"})
-			sound.play("main:/sound#blip")
+			data.sound("blip")
 			data.hp = data.hp + 10
 			data.scrap = data.scrap + 1
 		elseif t == 61 then
 			tilemap.set_tile("level#tilemap", "world", pos.x, pos.y, 0)
 			msg.post("view#game", "status", {text = "PICKED UP A DATA MODULE"})
-			sound.play("main:/sound#blip")
+			data.sound("blip")
 			data.xp = data.xp + math.random(5,10)
 		elseif t == 59 then
 			timer.delay(0.15, false, clear)
-			sound.play("main:/sound#exit")
+			data.sound("exit")
 		end
 
 		if ok then
@@ -170,11 +170,11 @@ end
 function hit(self, d)
 	data.hp = data.hp - d
 	msg.post("effect", "explode", {pos = go.get_position()})
-	sound.play("main:/sound#hit2")
+	data.sound("hit2")
 	if data.hp <= 0 then
 		data.hp = 0
 		data.turn = -1
-		sound.play("main:/sound#dead")
+		data.sound("dead")
 		msg.post("main:/sound#music2", "stop_sound")
 		msg.post("view#gameover", "show")
 		msg.post("view#game", "status", {text = "PLAYER DIED"})
@@ -223,7 +223,7 @@ local function input_playing(self, action_id, action)
 		msg.post("view#game", "status", {text = "SKIPPED A TURN"})
 	elseif action_id == hash("exit") and action.pressed then
 		msg.post("view#pause", "show")
-		sound.play("main:/sound#beep")
+		data.sound("beep")
 	end
 end
 

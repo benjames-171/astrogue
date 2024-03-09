@@ -92,7 +92,7 @@ end
 local function hit(self, damage)
 	self.hp = self.hp - damage
 	msg.post("effect", "explode", {pos = go.get_position()})
-	sound.play("main:/sound#hit1")
+	data.sound("hit1")
 	
 	if self.hp <= 0 then
 		enemy.delete(go.get_id())

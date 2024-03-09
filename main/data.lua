@@ -63,6 +63,10 @@ function M.ms2str(time)
 	return str
 end
 
+function M.sound(id)
+	msg.post("main:/sound", "play", {id = id})
+end
+
 function M.fullscreen(self)
 	defos.toggle_fullscreen()
 	defos.disable_window_resize()
